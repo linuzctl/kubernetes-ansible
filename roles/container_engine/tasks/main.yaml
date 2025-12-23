@@ -8,3 +8,4 @@
 - name: Execute crictl role
   ansible.builtin.import_role:
     name: crictl
+  when: crictl_install

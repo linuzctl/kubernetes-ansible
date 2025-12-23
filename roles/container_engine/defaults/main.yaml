@@ -18,14 +18,12 @@ containerd_arch: "{{ host_architecture }}"
 containerd_bin_dir: /usr/local/bin
 containerd_config_dir: /etc/containerd
 containerd_config_file: config.toml
-
 ## bin
 containerd_bin_url: "https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-{{ containerd_arch }}.tar.gz"
 containerd_bin_url_checksum: "sha256:https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-{{ host_architecture }}.tar.gz.sha256sum"
 contaienrd_bin_systemd_service_url: "https://raw.githubusercontent.com/containerd/containerd/refs/tags/v{{ containerd_version }}/containerd.service"
 containerd_bin_systemd_service_dir: "/usr/local/lib/systemd/system"
 containerd_bin_systemd_service_file: "containerd.service"
-
 ## apt
 containerd_apt_keyrings_dir: /etc/apt/keyrings
 containerd_apt_keyrings_file: "docker.gpg"
@@ -63,19 +61,16 @@ crio_apt_gpg_url: "https://download.opensuse.org/repositories/isv:/cri-o:/stable
 crio_apt_source: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:/${{ crio_version }}/deb/"
 
 # runc
-
 runc_bin_dir: /usr/local/sbin
-
 runc_version: v1.4.0
-
 runc_bin_url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.{{ host_architecture }}"
 runc_bin_url_checksum: "sha256:https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.sha256sum"
 
 # cni
-
 cni_bin_dir: /opt/cni/bin
-
 cni_version: v1.9.0
-
 cni_bin_url: "https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz"
 cni_bin_url_checksum: "sha512:https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz.sha512"
+
+# crictl
+crictl_install: true
