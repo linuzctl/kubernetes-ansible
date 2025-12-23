@@ -2,3 +2,7 @@
 
 bin_dir: "/usr/local/bin"
 kubeconfig_path: /etc/kubernetes/admin.conf
+
+container_engine_upgrade: true
+kube_vip_upgrade: true
+crictl_upgrade: true

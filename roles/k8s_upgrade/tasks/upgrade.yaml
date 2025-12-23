@@ -12,7 +12,7 @@
   changed_when: kubectl_drain.rc != 0
   delegate_to: "{{ groups['k8s_control_plane'][0] }}"
 
-- name: k8s_tools | Install kubeadm
+- name: upgrade | Install kubeadm
   ansible.builtin.import_role:
     name: k8s_tools
   vars:
@@ -54,21 +54,27 @@
   when:
     not inventory_hostname == groups['k8s_control_plane'][0]
 
-- name: k8s_tools | Install kubeadm
+- name: upgrade | Install kubeadm
   ansible.builtin.import_role:
     name: k8s_tools
   vars:
     install_kubeadm: false
 
-- name: k8s_tools | Install kubeadm
+- name: upgrade | Upgrade container_engine 
   ansible.builtin.import_role:
     name: container_engine
+  when: container_engine_upgrade
 
-- name: k8s_tools | Install kubeadm
+- name: upgrade | Upgrade kube-vip
   ansible.builtin.import_role:
     name: kube-vip
+  when: kube_vip_upgrade
 
-- name: Force handlers to run now
+- name: upgrade | Upgrade crictl
+  ansible.builtin.import_role:
+    name: crictl_upgrade
+
+- name: upgrade | Force handlers to run now
   ansible.builtin.meta: flush_handlers
 
 - name: upgrade | Node uncordon
@@ -80,6 +86,6 @@
   changed_when: kubectl_uncordon.rc != 0
   delegate_to: "{{ groups['k8s_control_plane'][0] }}"
 
-- name: Pause for 3 minutes
+- name: upgrade | Pause for 3 minutes
   ansible.builtin.pause:
     minutes: 3
