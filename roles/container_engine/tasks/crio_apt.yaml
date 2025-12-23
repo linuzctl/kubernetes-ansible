@@ -1,0 +1,33 @@
+---
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    pkg:
+      - software-properties-common
+      - curl
+
+- name: Create keyrings folder
+  ansible.builtin.file:
+    path: "{{ crio_apt_keyrings_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Add cri-o`s official GPG key
+  ansible.builtin.apt_key:
+    url: "{{ crio_apt_gpg_url }}"
+    keyring: "{{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}"
+
+- name: Add cri-o repository
+  ansible.builtin.apt_repository:
+    filename: docker
+    repo: "deb [arch={{ crio_arch }} signed-by={{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}] {{ crio_apt_source }} /"
+    state: present
+
+- name: Install cri-o
+  ansible.builtin.apt:
+    name:
+      - cri-o
+    update_cache: true
+    state: present

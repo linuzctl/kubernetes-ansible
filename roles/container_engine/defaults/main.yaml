@@ -1,0 +1,81 @@
+---
+
+container_engine_install:
+  - containerd
+
+container_engine_install_options:
+  - containerd
+  - gvisor
+  - crio
+
+# containerd
+containerd_install_method: bin
+containerd_install_method_available:
+  - bin
+  - apt
+containerd_version: "2.2.1"
+containerd_arch: "{{ host_architecture }}"
+containerd_bin_dir: /usr/local/bin
+containerd_config_dir: /etc/containerd
+containerd_config_file: config.toml
+
+## bin
+containerd_bin_url: "https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-{{ containerd_arch }}.tar.gz"
+containerd_bin_url_checksum: "sha256:https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-{{ host_architecture }}.tar.gz.sha256sum"
+contaienrd_bin_systemd_service_url: "https://raw.githubusercontent.com/containerd/containerd/refs/tags/v{{ containerd_version }}/containerd.service"
+containerd_bin_systemd_service_dir: "/usr/local/lib/systemd/system"
+containerd_bin_systemd_service_file: "containerd.service"
+
+## apt
+containerd_apt_keyrings_dir: /etc/apt/keyrings
+containerd_apt_keyrings_file: "docker.gpg"
+containerd_apt_gpg_url: https://download.docker.com/linux/debian/gpg
+containerd_apt_source: https://download.docker.com/linux/debian
+
+# gVisor
+gvisor_install_method: bin
+gvisor_install_method_available:
+  - bin
+  - apt
+gvisor_version: "20251215"
+gvisor_arch: "{{ ansible_architecture }}"
+## bin
+gvisor_bin_dir: /usr/local/bin
+gvisor_bin_url: "https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version }}/{{ gvisor_arch }}"
+gvisor_bin_url_checksum: "sha512:https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version }}/{{ gvisor_arch }}"
+## apt
+gvisor_apt_keyrings_dir: /usr/share/keyrings
+gvisor_apt_keyrings_file: gvisor-archive-keyring.gpg
+gvisor_apt_gpg_url: "https://gvisor.dev/archive.key"
+gvisor_apt_source: "https://storage.googleapis.com/gvisor/releases"
+
+# cri-o
+crio_install_method: bin
+crio_install_method_available:
+  - bin
+  - apt
+crio_version: "v1.34.3"
+crio_arch: "{{ host_architecture }}"
+## apt
+crio_apt_keyrings_dir: /etc/apt/keyrings
+crio_apt_keyrings_file: "cri-o-apt-keyring.gpg"
+crio_apt_gpg_url: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:/{{ crio_version }}/deb/Release.key"
+crio_apt_source: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:/${{ crio_version }}/deb/"
+
+# runc
+
+runc_bin_dir: /usr/local/sbin
+
+runc_version: v1.4.0
+
+runc_bin_url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.{{ host_architecture }}"
+runc_bin_url_checksum: "sha256:https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.sha256sum"
+
+# cni
+
+cni_bin_dir: /opt/cni/bin
+
+cni_version: v1.9.0
+
+cni_bin_url: "https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz"
+cni_bin_url_checksum: "sha512:https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz.sha512"

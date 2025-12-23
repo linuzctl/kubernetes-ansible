@@ -1,0 +1,38 @@
+---
+
+- name: kube-vip | Ensure destionation directory exists
+  ansible.builtin.file:
+    path: "{{ kube_vip_manifest_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+  when:
+    - inventory_hostname in groups['k8s_control_plane']
+
+- name: kube-vip | Check if kubeadm has already run
+  ansible.builtin.stat:
+    path: "/var/lib/kubelet/config.yaml"
+    get_attributes: false
+    get_checksum: false
+    get_mime: false
+  register: kubeadm_already_run
+  when:
+    - inventory_hostname in groups['k8s_control_plane']
+
+- name: kube-vip | Set kube_vip_admin_file var
+  ansible.builtin.set_fact:
+    kube_vip_admin_file: >-
+      {{ 'super-admin.conf' if inventory_hostname == groups['k8s_control_plane'][0] and not kubeadm_already_run.stat.exists else 'admin.conf' }}
+  when:
+    - inventory_hostname in groups['k8s_control_plane']
+
+- name: kube-vip | Set manifest
+  ansible.builtin.template:
+    src: "kube-vip.{{ kube_vip_manifest_type }}.yaml.j2"
+    dest: "{{ kube_vip_manifest_dir }}/{{ kube_vip_manifest_file }}"
+    mode: "0600"
+    owner: root
+    group: root
+  when:
+    - inventory_hostname in groups['k8s_control_plane']

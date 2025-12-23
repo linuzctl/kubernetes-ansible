@@ -1,0 +1,26 @@
+---
+
+
+- name: kubeadm | Check if kubeadm is installed
+  ansible.builtin.stat:
+    path: "{{ kubeadm_bin_dir }}/kubeadm"
+  register: kubeadm_file
+  ignore_errors: true
+
+- name: kubeadm | Get current kubeadm version
+  ansible.builtin.command: "{{ kubeadm_bin_dir }}/kubeadm version -o short"
+  register: kubeadm_current_version
+  when: kubeadm_file.stat.exists
+  changed_when: false
+
+- name: "kubeadm | Install kubeadm {{ kubeadm_version }}"
+  ansible.builtin.get_url:
+    url: "{{ kubeadm_bin_url }}"
+    checksum: "{{ kubeadm_bin_url_checksum }}"
+    dest: "{{ kubeadm_bin_dir }}/kubeadm"
+    mode: "0755"
+    owner: root
+    group: root
+  when: |
+    not kubeadm_file.stat.exists
+    or kubeadm_version not in kubeadm_current_version.stdout

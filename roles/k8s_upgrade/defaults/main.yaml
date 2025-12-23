@@ -1,0 +1,4 @@
+---
+
+bin_dir: "/usr/local/bin"
+kubeconfig_path: /etc/kubernetes/admin.conf

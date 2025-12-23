@@ -1,0 +1,131 @@
+---
+
+- name: initialization | Check if Kubernetes is already initialized
+  ansible.builtin.stat:
+    path: /var/lib/kubelet/config.yaml
+  register: kubeadm_config
+
+- name: initialization | Set kubeadm config
+  ansible.builtin.template:
+    src: "kubeadm.{{ kubeadm_apiversion }}.yaml.j2"
+    dest: "{{ kubeadm_config_dir }}/{{ kubeadm_config_file }}"
+    mode: "0600"
+    owner: root
+    group: root
+  when: inventory_hostname == groups['k8s_control_plane'][0]
+
+- name: initialization | Initialize first master node
+  ansible.builtin.command: |-
+    {{ kubeadm_bin_dir }}/kubeadm init
+    --config={{ kubeadm_config_dir }}/{{ kubeadm_config_file }}
+    {% if kubeadm_upload_certs | default(true) %}--upload-certs{% endif %}
+  register: kubeadm_init
+  failed_when: kubeadm_init.rc != 0
+  changed_when: kubeadm_init.rc != 0 and "Your Kubernetes control-plane has initialized successfully!" in kubeadm_init.stderr
+  when:
+    not kubeadm_config.stat.exists
+    and inventory_hostname == groups['k8s_control_plane'][0]
+
+- name: initialization | Set kubeadm certificate key
+  ansible.builtin.set_fact:
+    kubeadm_token: "{{ item | regex_search('--token ([^ ]+)', '\\1') | first }}"
+    kubeadm_certificate_key: "{{ item | regex_search('--certificate-key ([^ ]+)', '\\1') | first }}"
+    kubeadm_discovery_token_ca_cert_hash: "{{ item | regex_search('--discovery-token-ca-cert-hash ([^ ]+)', '\\1') | first }}"
+  with_items: "{{ groups['k8s_control_plane'][0]['kubeadm_init'].stdout_lines | default([]) }}"
+  run_once: true
+  when:
+    kubeadm_init is changed
+    and (item | trim) is match('.*--certificate-key.*')
+
+- name: initialization | Create kubeadm certificate key
+  ansible.builtin.command: |-
+    {{ kubeadm_bin_dir }}/kubeadm init phase upload-certs --upload-certs
+  register: kubeadm_certificate_key_raw
+  changed_when: false
+  when:
+    inventory_hostname == groups['k8s_control_plane'][0]
+    and kubeadm_certificate_key is not defined
+
+- name: Parse certificate key if not set
+  ansible.builtin.set_fact:
+    kubeadm_certificate_key: "{{ hostvars[groups['k8s_control_plane'][0]]['kubeadm_certificate_key_raw'].stdout_lines[-1] | trim }}"
+  run_once: true
+  when:
+    - hostvars[groups['k8s_control_plane'][0]]['kubeadm_certificate_key_raw'] is defined
+    - hostvars[groups['k8s_control_plane'][0]]['kubeadm_certificate_key_raw'] is not skipped
+
+- name: initialization | Generate kubeadm token
+  ansible.builtin.command: "{{ kubeadm_bin_dir }}/kubeadm --kubeconfig={{ kubeadm_config_dir }}/admin.conf token create --ttl {{ kubeadm_token_ttl }}"
+  register: temp_token
+  changed_when: false
+  when:
+    inventory_hostname == groups['k8s_control_plane'][0]
+
+- name: initialization | Set token global
+  ansible.builtin.set_fact:
+    kubeadm_boostrap_token: "{{ temp_token.stdout | trim }}"
+  run_once: true
+
+- name: initialization | Get kubeadm discovery token CA cert hash
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt  | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+    executable: /bin/bash
+  register: temp_kubeadm_ca_cert_hash
+  changed_when: false
+  when:
+    inventory_hostname == groups['k8s_control_plane'][0]
+
+- name: initialization | Set CA cert hash global
+  ansible.builtin.set_fact:
+    kubeadm_ca_cert_hash: "sha256:{{ temp_kubeadm_ca_cert_hash.stdout | trim }}"
+  run_once: true
+
+- name: initialization | Create kubeadm Control Plane config
+  ansible.builtin.template:
+    src: "{{ kubeadm_join_controlplane_config_file }}"
+    dest: "{{ kubeadm_config_dir }}/{{ kubeadm_config_file }}"
+    mode: "0600"
+    owner: root
+    group: root
+  when:
+    - inventory_hostname in groups['k8s_control_plane'][1:]
+    - not kubeadm_config.stat.exists
+
+- name: initialization | Join control plane
+  ansible.builtin.command: |-
+    {{ kubeadm_bin_dir }}/kubeadm join
+    --config {{ kubeadm_config_dir }}/{{ kubeadm_config_file }}
+  changed_when: true
+  when:
+    not kubeadm_config.stat.exists
+    and inventory_hostname in groups['k8s_control_plane'][1:]
+
+- name: initialization | Ensure kubeadm config directory exists
+  ansible.builtin.file:
+    path: "{{ kubeadm_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: initialization | Create kubeadm config
+  ansible.builtin.template:
+    src: "{{ kubeadm_join_worker_config_file }}"
+    dest: "{{ kubeadm_config_dir }}/{{ kubeadm_config_file }}"
+    mode: "0600"
+    owner: root
+    group: root
+  when:
+    not kubeadm_config.stat.exists
+    and inventory_hostname in groups['k8s_worker']
+
+- name: initialization | Join worker
+  ansible.builtin.command: |-
+    {{ kubeadm_bin_dir }}/kubeadm join
+    --config {{ kubeadm_config_dir }}/{{ kubeadm_config_file }}
+  changed_when: true
+  when:
+    not kubeadm_config.stat.exists
+    and inventory_hostname in groups['k8s_worker']

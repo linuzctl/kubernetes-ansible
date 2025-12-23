@@ -1,0 +1,16 @@
+---
+k8s_control_plane:
+  hosts:
+    master1:
+    master2:
+    master3:
+k8s_worker:
+  hosts:
+    worker1:
+    worker2:
+    worker3:
+
+k8s:
+  children:
+    k8s_control_plane:
+    k8s_worker:

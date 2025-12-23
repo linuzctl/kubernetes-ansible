@@ -1,0 +1,35 @@
+---
+
+- name: gvisor | Check if runsc is installed
+  ansible.builtin.stat:
+    path: "{{ gvisor_bin_dir }}/runsc"
+  register: gvisor_file
+  ignore_errors: true
+
+- name: gvisor | Get current gvisor version
+  ansible.builtin.command: "{{ gvisor_bin_dir }}/runsc --version"
+  register: gvisor_current_version
+  when: gvisor_file.stat.exists
+  changed_when: false
+
+- name: gvisor | Install runsc
+  when: |
+    not gvisor_file.stat.exists
+    or gvisor_version not in gvisor_current_version.stdout
+  block:
+    - name: "gvisor | Download bin runsc"
+      ansible.builtin.get_url:
+        url: "{{ gvisor_bin_url }}/runsc"
+        checksum: "{{ gvisor_bin_url_checksum }}/runsc.sha512"
+        dest: "{{ gvisor_bin_dir }}/runsc"
+        mode: "0755"
+        owner: root
+        group: root
+    - name: "gvisor | Download bin containerd-shim-runsc-v1"
+      ansible.builtin.get_url:
+        url: "{{ gvisor_bin_url }}/containerd-shim-runsc-v1"
+        checksum: "{{ gvisor_bin_url_checksum }}/containerd-shim-runsc-v1.sha512"
+        dest: "{{ gvisor_bin_dir }}/containerd-shim-runsc-v1"
+        mode: "0755"
+        owner: root
+        group: root

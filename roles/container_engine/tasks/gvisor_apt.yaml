@@ -1,0 +1,35 @@
+---
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+
+- name: Create keyrings folder
+  ansible.builtin.file:
+    path: "{{ gvisor_apt_keyrings_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Add gVisor`s official GPG key
+  ansible.builtin.apt_key:
+    url: "{{ gvisor_apt_gpg_url }}"
+    keyring: "{{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}"
+
+- name: Add gVisor repository
+  ansible.builtin.apt_repository:
+    filename: gvisor
+    repo: "deb [arch={{ host_architecture }} signed-by={{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}] {{ gvisor_apt_source }} release main"
+    state: present
+
+- name: Install gVisor
+  ansible.builtin.apt:
+    name:
+      - runsc
+    update_cache: true
+    state: present

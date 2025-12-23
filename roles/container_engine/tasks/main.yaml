@@ -1,0 +1,10 @@
+---
+
+- name: Install selected container runtime
+  ansible.builtin.include_tasks: "{{ item }}.yaml"
+  loop: "{{ container_engine_install }}"
+  when: item in container_engine_install_options
+
+- name: Execute crictl role
+  ansible.builtin.import_role:
+    name: crictl

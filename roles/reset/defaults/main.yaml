@@ -1,0 +1,18 @@
+---
+
+containerd_bin_dir: /usr/local/bin
+containerd_config_dir: /etc/containerd
+containerd_bin_systemd_service_dir: "/usr/local/lib/systemd/system"
+containerd_bin_systemd_service_file: "containerd.service"
+
+cni_dir: /opt/cni
+
+runc_bin_dir: /usr/local/sbin
+
+gvisor_bin_dir: /usr/local/bin
+
+crictl_config_dir: /etc
+crictl_config_file: crictl.yaml
+
+kube_vip_manifest_dir: /etc/kubernetes/manifests
+kube_vip_manifest_file: kube-vip.yaml

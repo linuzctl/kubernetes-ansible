@@ -1,0 +1,44 @@
+---
+
+- name: crictl | Check if cri is installed
+  ansible.builtin.stat:
+    path: "{{ crictl_bin_dir }}/crictl"
+  register: crictl_file
+  ignore_errors: true
+
+- name: crictl | Get current cri version
+  ansible.builtin.command: "{{ crictl_bin_dir }}/crictl --version"
+  register: crictl_current_version
+  when: crictl_file.stat.exists
+  changed_when: false
+
+- name: crictl | Install cri
+  when: |
+    not crictl_file.stat.exists
+    or crictl_version not in crictl_current_version.stdout
+  block:
+    - name: "crictl | Download cri {{ crictl_version }}"
+      ansible.builtin.get_url:
+        url: "{{ crictl_bin_url }}"
+        checksum: "{{ crictl_bin_url_checksum }}"
+        dest: "/tmp/crictl_{{ crictl_version }}_{{ crictl_arch }}.tar.gz"
+        mode: "0755"
+        owner: root
+        group: root
+    - name: crictl | Extract binary
+      ansible.builtin.unarchive:
+        src: "/tmp/crictl_{{ crictl_version }}_{{ crictl_arch }}.tar.gz"
+        dest: "{{ crictl_bin_dir }}"
+        remote_src: true
+    - name: crictl | Remove tar.gz file
+      ansible.builtin.file:
+        path: "/tmp/crictl_{{ crictl_version }}_{{ crictl_arch }}.tar.gz"
+        state: absent
+
+- name: crictl | Set config file
+  ansible.builtin.template:
+    src: crictl.yaml.j2
+    dest: "{{ crictl_config_dir }}/{{ crictl_config_file }}"
+    mode: "0600"
+    owner: "root"
+    group: "root"

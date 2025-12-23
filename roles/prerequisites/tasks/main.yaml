@@ -1,0 +1,66 @@
+---
+
+- name: prerequisites | Set hosts file
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ kubernetes_server_ip }} {{ kubernetes_server }}"
+
+- name: prerequisites | Install packages
+  ansible.builtin.apt:
+    pkg:
+      - conntrack
+      # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#ebtables-or-some-similar-executable-not-found-during-installation
+      - ethtool
+      - ebtables
+      # Recommended for csi-driver-nfs
+      - nfs-common
+
+- name: prerequisites | Enable the overlay module
+  community.general.modprobe:
+    name: overlay
+    state: present
+    persistent: present
+
+- name: prerequisites | Enable br_netfilter module
+  community.general.modprobe:
+    name: br_netfilter
+    state: present
+    persistent: present
+
+- name: prerequisites | Enable network filter
+  ansible.posix.sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    sysctl_set: true
+    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    state: present
+    reload: true
+
+- name: prerequisites | Enable network filter v6
+  ansible.posix.sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+    sysctl_set: true
+    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    state: present
+    reload: true
+  when: ipv6_enabled
+
+- name: prerequisites | Enable ip_forward v4
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    sysctl_set: true
+    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    state: present
+    reload: true
+
+- name: prerequisites | Enable ip_forward v6
+  ansible.posix.sysctl:
+    name: net.ipv6.ip_forward
+    value: 1
+    sysctl_set: true
+    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    state: present
+    reload: true
+  when: ipv6_enabled

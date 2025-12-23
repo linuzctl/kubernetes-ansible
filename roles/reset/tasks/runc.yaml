@@ -1,0 +1,7 @@
+---
+
+- name: runc | Remove runc binary
+  ansible.builtin.file:
+    path: "{{ runc_bin_dir }}/runc"
+    state: absent
+    force: true

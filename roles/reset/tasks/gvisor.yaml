@@ -1,0 +1,11 @@
+---
+
+- name: gvisor | Remove runsc binary
+  ansible.builtin.file:
+    path: "{{ gvisor_bin_dir }}/runsc"
+    state: absent
+
+- name: gvisor | Remove containerd-shim-runsc-v1 binary
+  ansible.builtin.file:
+    path: "{{ gvisor_bin_dir }}/containerd-shim-runsc-v1"
+    state: absent

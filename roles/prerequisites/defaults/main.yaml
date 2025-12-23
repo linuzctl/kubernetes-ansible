@@ -1,0 +1,7 @@
+---
+prerequisites_sysctl_file: /etc/sysctl.d/k8s.conf
+
+kubernetes_server: ""
+kubernetes_server_ip: ""
+
+ipv6_enabled: false

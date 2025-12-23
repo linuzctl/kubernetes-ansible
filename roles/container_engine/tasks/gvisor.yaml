@@ -1,0 +1,9 @@
+---
+
+- name: Gvisor choose bin install
+  ansible.builtin.include_tasks: "gvisor_bin.yaml"
+  when: gvisor_install_method == "bin"
+
+- name: Gvisor choose apt install
+  ansible.builtin.include_tasks: "gvisor_apt.yaml"
+  when: gvisor_install_method == "apt"

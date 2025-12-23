@@ -1,0 +1,22 @@
+---
+
+kubeadm_install: true
+kubeadm_version: "v1.35.0"
+kubeadm_bin_dir: "/usr/local/bin"
+kubeadm_arch: "{{ host_architecture }}"
+kubeadm_bin_url: "https://dl.k8s.io/{{ kubeadm_version }}/bin/linux/{{ kubeadm_arch }}/kubeadm"
+kubeadm_bin_url_checksum: "sha256:https://dl.k8s.io/{{ kubeadm_version }}/bin/linux/{{ kubeadm_arch }}/kubeadm.sha256"
+
+kubelet_install: true
+kubelet_version: "v1.35.0"
+kubelet_bin_dir: "/usr/local/bin"
+kubelet_arch: "{{ host_architecture }}"
+kubelet_bin_url: "https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ kubelet_arch }}/kubelet"
+kubelet_bin_url_checksum: "sha256:https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ kubelet_arch }}/kubelet.sha256"
+
+kubectl_install: true
+kubectl_version: "v1.35.0"
+kubectl_bin_dir: "/usr/local/bin"
+kubectl_arch: "{{ host_architecture }}"
+kubectl_bin_url: "https://dl.k8s.io/{{ kubectl_version }}/bin/linux/{{ kubectl_arch }}/kubectl"
+kubectl_bin_url_checksum: "sha256:https://dl.k8s.io/{{ kubectl_version }}/bin/linux/{{ kubectl_arch }}/kubectl.sha256"

@@ -1,0 +1,11 @@
+---
+kube_vip_manifest_dir: /etc/kubernetes/manifests
+kube_vip_manifest_file: kube-vip.yaml
+kube_vip_manifest_type: pod
+kube_vip_manifest_type_options:
+  - pod
+kube_vip_image_repo: ghcr.io/kube-vip/kube-vip
+kube_vip_image_tag: v1.0.3
+kube_vip_image_pull_policy: Always
+kube_vip_interface: ""
+kube_vip_address: ""

@@ -1,0 +1,19 @@
+---
+
+- name: precheck | Check if kubelet is installed
+  ansible.builtin.stat:
+    path: "{{ bin_dir }}/kubelet"
+  register: check_kubelet_file
+  ignore_errors: true
+
+- name: precheck | Get current kubelet version
+  ansible.builtin.command: "{{ bin_dir }}/kubelet --version"
+  register: check_kubelet_current_version
+  when: check_kubelet_file.stat.exists
+  changed_when: false
+
+- name: precheck | Import upgrade task
+  ansible.builtin.import_tasks: upgrade.yaml
+  when: |-
+    not check_kubelet_file.stat.exists
+    or kubelet_version not in check_kubelet_current_version.stdout

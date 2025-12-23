@@ -1,0 +1,43 @@
+---
+
+- name: Check if cni is installed
+  ansible.builtin.stat:
+    path: "{{ cni_bin_dir }}/bandwidth"
+  register: cni_file
+  ignore_errors: true
+
+- name: Get current cni version
+  ansible.builtin.command: "{{ cni_bin_dir }}/bandwidth"
+  register: cni_current_version
+  when: cni_file.stat.exists
+  changed_when: false
+
+- name: Install cni
+  when: |
+    not cni_file.stat.exists
+    or cni_version not in cni_current_version.stderr_lines[0]
+  block:
+    - name: "Download cni {{ cni_version }}"
+      ansible.builtin.get_url:
+        url: "{{ cni_bin_url }}"
+        checksum: "{{ cni_bin_url_checksum }}"
+        dest: "/tmp/cni_{{ cni_version }}_{{ host_architecture }}.tgz"
+        mode: "0755"
+        owner: root
+        group: root
+    - name: Ensure cni dir exists
+      ansible.builtin.file:
+        path: "{{ cni_bin_dir }}"
+        state: directory
+        mode: "0755"
+        owner: "root"
+        group: "root"
+    - name: Extract binary
+      ansible.builtin.unarchive:
+        src: "/tmp/cni_{{ cni_version }}_{{ host_architecture }}.tgz"
+        dest: "{{ cni_bin_dir }}"
+        remote_src: true
+    - name: Remove tgz file
+      ansible.builtin.file:
+        path: "/tmp/cni_{{ cni_version }}_{{ host_architecture }}.tgz"
+        state: absent

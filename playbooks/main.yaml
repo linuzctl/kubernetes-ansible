@@ -1,0 +1,23 @@
+---
+
+- name: Prepare control-plane nodes
+  hosts: k8s
+  gather_facts: true
+  become: true
+  vars:
+    host_architecture_options:
+      x86_64: amd64
+      aarch64: arm64
+      armv7l: arm
+    host_architecture: >-
+      {%- if ansible_facts['architecture'] in host_architecture_options -%}
+      {{ host_architecture_options[ansible_facts['architecture']] }}
+      {%- else -%}
+      {{ ansible_facts['architecture'] }}
+      {%- endif -%}
+  roles:
+    - prerequisites
+    - container_engine
+    - k8s_tools
+    - kube-vip
+    - k8s

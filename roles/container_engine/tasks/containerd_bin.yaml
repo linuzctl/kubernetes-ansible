@@ -1,0 +1,77 @@
+---
+
+- name: containerd | Check if containerd is installed
+  ansible.builtin.stat:
+    path: "{{ containerd_bin_dir }}/containerd"
+  register: containerd_file
+  ignore_errors: true
+
+- name: containerd | Get current containerd version
+  ansible.builtin.command: "{{ containerd_bin_dir }}/containerd --version"
+  register: containerd_current_version
+  when: containerd_file.stat.exists
+  changed_when: false
+
+- name: containerd | Install containerd
+  when: |
+    not containerd_file.stat.exists
+    or containerd_version not in containerd_current_version.stdout
+  notify: Restart containerd service
+  block:
+    - name: "containerd | Download containerd {{ containerd_version }}"
+      ansible.builtin.get_url:
+        url: "{{ containerd_bin_url }}"
+        checksum: "{{ containerd_bin_url_checksum }}"
+        dest: "/tmp/containerd_{{ containerd_version }}_{{ containerd_arch }}.tar.gz"
+        mode: "0755"
+        owner: root
+        group: root
+    - name: containerd | Extract binary
+      ansible.builtin.unarchive:
+        src: "/tmp/containerd_{{ containerd_version }}_{{ containerd_arch }}.tar.gz"
+        dest: "{{ containerd_bin_dir }}"
+        remote_src: true
+        extra_opts: ["--strip-components", "1"]
+    - name: containerd | Remove tar.gz file
+      ansible.builtin.file:
+        path: "/tmp/containerd_{{ containerd_version }}_{{ containerd_arch }}.tar.gz"
+        state: absent
+
+- name: containerd | Ensure systemd service dir exists
+  ansible.builtin.file:
+    path: "{{ containerd_bin_systemd_service_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: containerd | Configure systemd service containerd
+  ansible.builtin.get_url:
+    url: "{{ contaienrd_bin_systemd_service_url }}"
+    dest: "{{ containerd_bin_systemd_service_dir }}/{{ containerd_bin_systemd_service_file }}"
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Restart containerd service
+
+- name: containerd | Ensure containerd config dir exists
+  ansible.builtin.file:
+    path: "{{ containerd_config_dir }}"
+    state: directory
+    mode: "0755"
+    owner: "root"
+    group: "root"
+
+- name: containerd | Copy containerd config file
+  ansible.builtin.template:
+    src: containerd.config.toml.j2
+    dest: "{{ containerd_config_dir }}/{{ containerd_config_file }}"
+    mode: "0640"
+    owner: "root"
+    group: "root"
+  notify: Restart containerd service
+
+- name: containerd | Ensure containerd is started and enabled
+  ansible.builtin.systemd_service:
+    name: containerd
+    daemon_reload: true
+    enabled: true
+    state: started

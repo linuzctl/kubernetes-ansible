@@ -1,0 +1,14 @@
+---
+# .ansible-lint
+
+profile: production
+
+enable_list:
+  - name[prefix]
+
+skip_list:
+  - yaml[line-length]
+  - role-name[path]
+  - var-naming[no-role-prefix]
+  - name[prefix]
+  - name[casing]

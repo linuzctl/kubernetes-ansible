@@ -1,0 +1,11 @@
+---
+
+- name: crictl | Remove crictl binary
+  ansible.builtin.file:
+    path: "{{ crictl_bin_dir }}/runsc"
+    state: absent
+
+- name: crictl | Remove crictl config
+  ansible.builtin.file:
+    path: "{{ crictl_config_dir }}/{{ crictl_config_file }}"
+    state: absent

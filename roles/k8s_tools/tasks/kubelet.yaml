@@ -1,0 +1,59 @@
+---
+
+- name: kubelet | Check if kubelet is installed
+  ansible.builtin.stat:
+    path: "{{ kubelet_bin_dir }}/kubelet"
+  register: kubelet_file
+  ignore_errors: true
+
+- name: kubelet | Get current kubelet version
+  ansible.builtin.command: "{{ kubelet_bin_dir }}/kubelet --version"
+  register: kubelet_current_version
+  when: kubelet_file.stat.exists
+  changed_when: false
+
+- name: "kubelet | Install kubelet {{ kubelet_version }}"
+  ansible.builtin.get_url:
+    url: "{{ kubelet_bin_url }}"
+    checksum: "{{ kubelet_bin_url_checksum }}"
+    dest: "{{ kubectl_bin_dir }}/kubelet"
+    mode: "0755"
+    owner: root
+    group: root
+  when: |
+    not kubelet_file.stat.exists
+    or kubelet_version not in kubelet_current_version.stdout
+  notify: kubelet | restart kubelet
+
+- name: kubelet | Set kubelet service
+  ansible.builtin.template:
+    src: kubelet.service.j2
+    dest: /etc/systemd/system/kubelet.service
+    mode: "0644"
+    owner: root
+    group: root
+  notify: kubelet | restart kubelet
+
+- name: kubelet | Ensure kubelet service dir exists
+  ansible.builtin.file:
+    path: /etc/systemd/system/kubelet.service.d
+    state: directory
+    mode: "0755"
+    owner: "root"
+    group: "root"
+
+- name: kubelet | Set 10-kubeadm.conf for kubelet
+  ansible.builtin.template:
+    src: 10-kubeadm.conf.j2
+    dest: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    mode: "0644"
+    owner: root
+    group: root
+  notify: kubelet | restart kubelet
+
+- name: kubelet | Ensure kubelet is started and enabled
+  ansible.builtin.systemd:
+    name: kubelet
+    daemon_reload: true
+    enabled: true
+    state: started

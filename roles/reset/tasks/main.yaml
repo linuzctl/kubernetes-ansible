@@ -1,0 +1,31 @@
+---
+
+- name: Remove containerd
+  ansible.builtin.import_tasks: containerd.yaml
+  tags:
+    - containerd
+
+- name: Remove cni
+  ansible.builtin.import_tasks: cni.yaml
+  tags:
+    - cni
+
+- name: Remove runc
+  ansible.builtin.import_tasks: runc.yaml
+  tags:
+    - runc
+
+- name: Remove gvisor
+  ansible.builtin.import_tasks: gvisor.yaml
+  tags:
+    - gvisor
+
+- name: Remove crictl
+  ansible.builtin.import_tasks: crictl.yaml
+  tags:
+    - crictl
+
+- name: Remove kube-vip
+  ansible.builtin.import_tasks: kube-vip.yaml
+  tags:
+    - kube-vip

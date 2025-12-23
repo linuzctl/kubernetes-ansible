@@ -1,0 +1,7 @@
+---
+
+- name: cni | Remove cni binary
+  ansible.builtin.file:
+    path: "{{ cni_dir }}"
+    state: absent
+    force: true

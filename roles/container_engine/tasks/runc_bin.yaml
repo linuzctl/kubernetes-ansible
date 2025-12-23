@@ -1,0 +1,27 @@
+---
+
+- name: Check if runc is installed
+  ansible.builtin.stat:
+    path: "{{ runc_bin_dir }}/runc"
+  register: runc_file
+  ignore_errors: true
+
+- name: Get current runc version
+  ansible.builtin.command: "{{ runc_bin_dir }}/runc --version"
+  register: runc_current_version
+  when: runc_file.stat.exists
+  changed_when: false
+
+- name: Install runc
+  when: |
+    not runc_file.stat.exists
+    or runc_version not in runc_current_version.stdout
+  block:
+    - name: "Download runc {{ runc_version }}"
+      ansible.builtin.get_url:
+        url: "{{ runc_bin_url }}"
+        checksum: "{{ runc_bin_url_checksum }}"
+        dest: "{{ runc_bin_dir }}/runc"
+        mode: "0755"
+        owner: root
+        group: root

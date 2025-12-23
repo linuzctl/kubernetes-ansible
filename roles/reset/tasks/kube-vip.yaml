@@ -1,0 +1,9 @@
+---
+
+- name: kube-vip | Remove kube-vip files
+  ansible.builtin.file:
+    path: "{{ kube_vip_manifest_dir }}/{{ item }}"
+    state: absent
+  loop:
+    - kube-vip.yaml
+    - kube-vip.service-account.yaml

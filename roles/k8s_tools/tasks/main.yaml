@@ -1,0 +1,13 @@
+---
+
+- name: k8s_tools | Install kubeadm
+  ansible.builtin.import_tasks: kubeadm.yaml
+  when: kubeadm_install
+
+- name: k8s_tools | Install kubelet
+  ansible.builtin.import_tasks: kubelet.yaml
+  when: kubelet_install
+
+- name: k8s_tools | Install kubectl
+  ansible.builtin.import_tasks: kubectl.yaml
+  when: kubectl_install and inventory_hostname in groups['k8s_control_plane']

@@ -1,0 +1,85 @@
+---
+
+- name: upgrade | Drain node
+  ansible.builtin.command: |-
+    {{ bin_dir }}/kubectl drain {{ ansible_facts["hostname"] }}
+    --ignore-daemonsets
+    --delete-emptydir-data
+    --disable-eviction
+    --kubeconfig={{ kubeconfig_path }}
+  register: kubectl_drain
+  failed_when: kubectl_drain.rc != 0
+  changed_when: kubectl_drain.rc != 0
+  delegate_to: "{{ groups['k8s_control_plane'][0] }}"
+
+- name: k8s_tools | Install kubeadm
+  ansible.builtin.import_role:
+    name: k8s_tools
+  vars:
+    kubelet_install: false
+    kubectl_install: false
+
+- name: upgrade | Gracefully stop kube-apiserver before etcd upgrade
+  ansible.builtin.command: |-
+    killall -s SIGTERM kube-apiserver
+  register: stop_apiserver
+  failed_when: stop_apiserver.rc not in [0, 1]
+  changed_when: stop_apiserver.rc == 0
+  when:
+    inventory_hostname == groups['k8s_control_plane']
+
+- name: upgrade | Wait for in-flight requests to complete
+  ansible.builtin.pause:
+    seconds: 20
+  when:
+    inventory_hostname == groups['k8s_control_plane']
+
+- name: upgrade | Upgrade kubernetes
+  ansible.builtin.command: |-
+    {{ bin_dir }}/kubeadm upgrade apply -y {{ kubernetes_version }}
+    --ignore-preflight-errors=all
+  register: kubernetes_upgrade
+  failed_when: kubernetes_upgrade.rc != 0
+  changed_when: kubernetes_upgrade.rc != 0
+  when:
+    inventory_hostname == groups['k8s_control_plane'][0]
+
+- name: upgrade | Upgrade kubernetes
+  ansible.builtin.command: |-
+    {{ bin_dir }}/kubeadm upgrade node
+    --ignore-preflight-errors=all
+  register: kubernetes_upgrade
+  failed_when: kubernetes_upgrade.rc != 0
+  changed_when: kubernetes_upgrade.rc != 0
+  when:
+    not inventory_hostname == groups['k8s_control_plane'][0]
+
+- name: k8s_tools | Install kubeadm
+  ansible.builtin.import_role:
+    name: k8s_tools
+  vars:
+    install_kubeadm: false
+
+- name: k8s_tools | Install kubeadm
+  ansible.builtin.import_role:
+    name: container_engine
+
+- name: k8s_tools | Install kubeadm
+  ansible.builtin.import_role:
+    name: kube-vip
+
+- name: Force handlers to run now
+  ansible.builtin.meta: flush_handlers
+
+- name: upgrade | Node uncordon
+  ansible.builtin.command: |-
+    {{ bin_dir }}/kubectl uncordon {{ inventory_hostname }}
+    --kubeconfig={{ kubeconfig_path }}
+  register: kubectl_uncordon
+  failed_when: kubectl_uncordon.rc != 0
+  changed_when: kubectl_uncordon.rc != 0
+  delegate_to: "{{ groups['k8s_control_plane'][0] }}"
+
+- name: Pause for 3 minutes
+  ansible.builtin.pause:
+    minutes: 3

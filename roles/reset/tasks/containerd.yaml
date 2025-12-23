@@ -1,0 +1,35 @@
+---
+
+- name: containerd | Check if containerd is installed
+  ansible.builtin.stat:
+    path: "{{ containerd_bin_dir }}/containerd"
+  register: containerd_file
+  ignore_errors: true
+
+- name: containerd | Remove containerd
+  when: containerd_file.stat.exists
+  block:
+    - name: containerd | Stop systemd service
+      ansible.builtin.systemd_service:
+        name: containerd
+        state: stopped
+        enabled: false
+        force: true
+    - name: containerd | Remove systemd service file
+      ansible.builtin.file:
+        path: "{{ containerd_bin_systemd_service_dir }}/{{ containerd_bin_systemd_service_file }}"
+        state: absent
+    - name: containerd | Remove containerd config
+      ansible.builtin.file:
+        path: "{{ containerd_config_dir }}"
+        state: absent
+    - name: containerd | Remove containerd binary
+      ansible.builtin.file:
+        path: "{{ containerd_bin_dir }}/containerd"
+        state: absent
+
+- name: containerd | Remove containerd opt dir
+  ansible.builtin.file:
+    path: "/opt/containerd"
+    state: absent
+    force: true

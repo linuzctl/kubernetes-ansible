@@ -1,0 +1,46 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+{% if kubeadm_bootstraptoken is defined %}
+bootstrapTokens:
+- token: "{{ kubeadm_bootstraptoken }}"
+  description: "kubeadm bootstrap token"
+  ttl: "24h"
+{% endif %}
+dryRun: false
+nodeRegistration:
+  name: {{ kube_override_hostname | default(inventory_hostname) }}
+{% if inventory_hostname in groups['k8s_control_plane'] and inventory_hostname not in groups['k8s_worker'] %}
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+{% else %}
+  taints: []
+{% endif %}
+localAPIEndpoint:
+    advertiseAddress: {{ ansible_default_ipv4.address }}
+    bindPort: {{ kubeadm_localapiendpoint_advertiseaddress }}
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+etcd:
+  local:
+    dataDir: {{ kubeadm_etdc_local_datadir }}
+networking:
+  dnsDomain: {{ kubeadm_networking_dnsdomain }}
+  serviceSubnet: {{ kubeadm_networking_servicesubnet }}
+kubernetesVersion: {{ kubeadm_kubernetesversion }}
+controlPlaneEndpoint: {{ kubeadm_controlplaneendpoint }}
+apiServer: {}
+controllerManager: {}
+scheduler: {}
+dns:
+  disabled: {{ kubeadm_dns_disabled | lower }}
+proxy:
+  disabled: {{ kubeadm_proxy_disabled | lower }}
+certificatesDir: {{ kubeadm_certificatesdir }}
+imageRepository: {{ kubeadm_imagerepository }}
+clusterName: {{ kubeadm_clustername }}
+encryptionAlgorithm: {{ kubeadm_encryptionalgorithm }}
+certificateValidityPeriod: {{ kubeadm_certificatevalidityperiod }}
+caCertificateValidityPeriod: {{ kubeadm_cacertificatevalidityperiod }}

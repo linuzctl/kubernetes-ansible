@@ -1,0 +1,9 @@
+---
+
+kubernetes_cluster_name: example
+kubernetes_dns_domain: k8s.example.com
+kubernetes_cidr_service: 10.42.0.0/16
+kubernetes_cidr_pods: 10.244.0.0/16
+
+kube_vip_interface: "eth0"
+kube_vip_address: "{{ kubernetes_server_ip }}"

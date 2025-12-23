@@ -1,0 +1,25 @@
+---
+
+- name: kubectl | Check if kubectl is installed
+  ansible.builtin.stat:
+    path: "{{ kubectl_bin_dir }}/kubectl"
+  register: kubectl_file
+  ignore_errors: true
+
+- name: kubectl | Get current kubectl version
+  ansible.builtin.command: "{{ kubectl_bin_dir }}/kubectl version --client"
+  register: kubectl_current_version
+  when: kubectl_file.stat.exists
+  changed_when: false
+
+- name: "kubectl | Install kubectl {{ kubectl_version }}"
+  ansible.builtin.get_url:
+    url: "{{ kubectl_bin_url }}"
+    checksum: "{{ kubectl_bin_url_checksum }}"
+    dest: "{{ kubectl_bin_dir }}/kubectl"
+    mode: "0755"
+    owner: root
+    group: root
+  when: |
+    not kubectl_file.stat.exists
+    or kubectl_version not in kubectl_current_version.stdout

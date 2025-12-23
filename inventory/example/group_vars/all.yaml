@@ -1,0 +1,10 @@
+---
+
+kubernetes_version: v1.35.0
+kubernetes_server: example.k8s.example.com
+kubernetes_server_port: 6443
+kubernetes_server_ip: 192.168.188.50
+
+kubeadm_version: "{{ kubernetes_version }}"
+kubelet_version: "{{ kubernetes_version }}"
+kubectl_version: "{{ kubernetes_version }}"

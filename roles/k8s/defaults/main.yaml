@@ -1,0 +1,26 @@
+---
+kubeadm_apiversion: v1beta4
+kubeadm_config_dir: /etc/kubernetes
+kubeadm_bin_dir: /usr/local/bin
+kubeadm_config_file: kubeadm.yaml
+kubeadm_join_controlplane_config_file: "kubeadm.{{ kubeadm_apiversion }}.join.controlplane.yaml.j2"
+kubeadm_join_worker_config_file: "kubeadm.{{ kubeadm_apiversion }}.join.worker.yaml.j2"
+
+kubeadm_init_upload_certs: true
+kubeadm_token_ttl: 30m
+
+# kubeadm config files
+kubeadm_localapiendpoint_advertiseaddress: "{{ kubernetes_server_port }}"
+kubeadm_etdc_local_datadir: /var/lib/etcd
+kubeadm_networking_dnsdomain: "{{ kubernetes_dns_domain }}"
+kubeadm_networking_servicesubnet: "{{ kubernetes_cidr_service }}"
+kubeadm_kubernetesversion: "{{ kubernetes_version }}"
+kubeadm_controlplaneendpoint: "{{ kubernetes_server }}:{{ kubernetes_server_port }}"
+kubeadm_dns_disabled: true
+kubeadm_proxy_disabled: true
+kubeadm_certificatesdir: /etc/kubernetes/pki
+kubeadm_imagerepository: registry.k8s.io
+kubeadm_clustername: "{{ kubernetes_cluster_name }}"
+kubeadm_encryptionalgorithm: RSA-4096
+kubeadm_certificatevalidityperiod: "8760h"
+kubeadm_cacertificatevalidityperiod: "87600h"

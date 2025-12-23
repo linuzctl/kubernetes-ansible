@@ -1,0 +1,16 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: JoinConfiguration
+dryRun: false
+nodeRegistration:
+  name: {{ kube_override_hostname | default(inventory_hostname) }}
+  kubeletExtraArgs:
+    - name: node-ip
+      value: {{ ansible_default_ipv4.address }}
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: {{ kubeadm_controlplaneendpoint }}
+    token: {{ kubeadm_boostrap_token }}
+    unsafeSkipCAVerification: false
+    caCertHashes:
+      - {{ kubeadm_ca_cert_hash }}

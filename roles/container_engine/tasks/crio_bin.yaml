@@ -1,0 +1,5 @@
+---
+
+- name: "Yeahh"
+  ansible.builtin.debug:
+    msg: "yeah install crio - bin"
