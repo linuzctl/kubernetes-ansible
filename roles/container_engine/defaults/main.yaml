@@ -13,6 +13,7 @@ containerd_install_method: bin
 containerd_install_method_available:
   - bin
   - apt
+# renovate: datasource=github-releases depName=containerd/containerd
 containerd_version: "2.2.1"
 containerd_arch: "{{ host_architecture }}"
 containerd_bin_dir: /usr/local/bin
@@ -35,7 +36,9 @@ gvisor_install_method: bin
 gvisor_install_method_available:
   - bin
   - apt
-gvisor_version: "20251215"
+# renovate: datasource=github-tags depName=google/gvisor versioning=regex:^release-(?<major>[0-9]{8})\.\d+$
+gvisor_version_raw: release-20251215.0
+gvisor_version: "{{ gvisor_version | regex_replace('^release-', '') | regex_replace('\\.0$', '') }}"
 gvisor_arch: "{{ ansible_architecture }}"
 ## bin
 gvisor_bin_dir: /usr/local/bin
@@ -52,6 +55,7 @@ crio_install_method: bin
 crio_install_method_available:
   - bin
   - apt
+# renovate: datasource=github-releases depName=cri-o/cri-o
 crio_version: "v1.34.3"
 crio_arch: "{{ host_architecture }}"
 ## apt
@@ -62,12 +66,14 @@ crio_apt_source: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:
 
 # runc
 runc_bin_dir: /usr/local/sbin
+# renovate: datasource=github-releases depName=opencontainers/runc
 runc_version: v1.4.0
 runc_bin_url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.{{ host_architecture }}"
 runc_bin_url_checksum: "sha256:https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.sha256sum"
 
 # cni
 cni_bin_dir: /opt/cni/bin
+# renovate: datasource=github-releases depName=containernetworking/plugins
 cni_version: v1.9.0
 cni_bin_url: "https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz"
 cni_bin_url_checksum: "sha512:https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz.sha512"
