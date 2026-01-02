@@ -56,7 +56,7 @@ crio_install_method_available:
   - bin
   - apt
 # renovate: datasource=github-releases depName=cri-o/cri-o
-crio_version: "v1.34.3"
+crio_version: "v1.35.0"
 crio_arch: "{{ host_architecture }}"
 ## apt
 crio_apt_keyrings_dir: /etc/apt/keyrings
