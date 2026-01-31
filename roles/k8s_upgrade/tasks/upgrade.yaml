@@ -60,7 +60,7 @@
   vars:
     install_kubeadm: false
 
-- name: upgrade | Upgrade container_engine 
+- name: upgrade | Upgrade container_engine
   ansible.builtin.import_role:
     name: container_engine
   when: container_engine_upgrade
@@ -72,7 +72,8 @@
 
 - name: upgrade | Upgrade crictl
   ansible.builtin.import_role:
-    name: crictl_upgrade
+    name: crictl
+  when: crictl_upgrade
 
 - name: upgrade | Force handlers to run now
   ansible.builtin.meta: flush_handlers
