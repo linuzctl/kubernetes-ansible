@@ -51,18 +51,18 @@ gvisor_apt_gpg_url: "https://gvisor.dev/archive.key"
 gvisor_apt_source: "https://storage.googleapis.com/gvisor/releases"
 
 # cri-o
-crio_install_method: bin
+crio_install_method: apt
 crio_install_method_available:
-  - bin
   - apt
 # renovate: datasource=github-releases depName=cri-o/cri-o
 crio_version: "v1.35.0"
+crio_version_short: "{{ crio_version | regex_replace('^(v[0-9]+\\.[0-9]+).*', '\\1') }}"
 crio_arch: "{{ host_architecture }}"
 ## apt
 crio_apt_keyrings_dir: /etc/apt/keyrings
 crio_apt_keyrings_file: "cri-o-apt-keyring.gpg"
-crio_apt_gpg_url: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:/{{ crio_version }}/deb/Release.key"
-crio_apt_source: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:/${{ crio_version }}/deb/"
+crio_apt_gpg_url: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:/{{ crio_version_short }}/deb/Release.key"
+crio_apt_source: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:/{{ crio_version_short }}/deb/"
 
 # runc
 runc_bin_dir: /usr/local/sbin
