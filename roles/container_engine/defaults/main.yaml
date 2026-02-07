@@ -37,7 +37,7 @@ gvisor_install_method_available:
   - bin
   - apt
 # renovate: datasource=github-tags depName=google/gvisor versioning=regex:^release-(?<minor>[0-9]{8})\.(?<patch>[0-9]+)$
-gvisor_version: release-20251215.0
+gvisor_version: release-20260202.0
 gvisor_version_short: "{{ gvisor_version | regex_replace('^release-', '') | regex_replace('\\.0$', '') }}"
 gvisor_arch: "{{ ansible_architecture }}"
 ## bin
