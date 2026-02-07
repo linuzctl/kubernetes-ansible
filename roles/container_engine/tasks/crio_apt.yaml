@@ -1,5 +1,10 @@
 ---
 
+- name: Install dependencies
+  ansible.builtin.apt:
+    pkg:
+      - gnupg
+
 - name: Create keyrings folder
   ansible.builtin.file:
     path: "{{ crio_apt_keyrings_dir }}"
@@ -12,6 +17,9 @@
   ansible.builtin.get_url:
     url: "{{ crio_apt_gpg_url }}"
     dest: "{{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}"
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Add cri-o repository
   ansible.builtin.apt_repository:
