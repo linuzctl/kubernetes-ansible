@@ -36,14 +36,14 @@ gvisor_install_method: bin
 gvisor_install_method_available:
   - bin
   - apt
-# renovate: datasource=github-tags depName=google/gvisor versioning=regex:^release-(?<major>[0-9]{8})\.\d+$
-gvisor_version_raw: release-20251215.0
-gvisor_version: "{{ gvisor_version | regex_replace('^release-', '') | regex_replace('\\.0$', '') }}"
+# renovate: datasource=github-tags depName=google/gvisor versioning=regex:^release-(?<minor>[0-9]{8})\.(?<patch>[0-9]+)$
+gvisor_version: release-20251215.0
+gvisor_version_short: "{{ gvisor_version | regex_replace('^release-', '') | regex_replace('\\.0$', '') }}"
 gvisor_arch: "{{ ansible_architecture }}"
 ## bin
 gvisor_bin_dir: /usr/local/bin
-gvisor_bin_url: "https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version }}/{{ gvisor_arch }}"
-gvisor_bin_url_checksum: "sha512:https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version }}/{{ gvisor_arch }}"
+gvisor_bin_url: "https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version_short }}/{{ gvisor_arch }}"
+gvisor_bin_url_checksum: "sha512:https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version_short }}/{{ gvisor_arch }}"
 ## apt
 gvisor_apt_keyrings_dir: /usr/share/keyrings
 gvisor_apt_keyrings_file: gvisor-archive-keyring.gpg
