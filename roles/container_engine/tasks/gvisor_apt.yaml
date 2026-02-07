@@ -17,9 +17,9 @@
     mode: '0755'
 
 - name: Add gVisor`s official GPG key
-  ansible.builtin.apt_key:
+  ansible.builtin.get_url:
     url: "{{ gvisor_apt_gpg_url }}"
-    keyring: "{{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}"
+    dest: "{{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}"
 
 - name: Add gVisor repository
   ansible.builtin.apt_repository:
