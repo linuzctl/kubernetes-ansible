@@ -18,6 +18,9 @@
   ansible.builtin.get_url:
     url: "{{ containerd_apt_gpg_url }}"
     dest: "{{ containerd_apt_keyrings_dir }}/{{ containerd_apt_keyrings_file }}"
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Add Docker repository
   ansible.builtin.apt_repository:
