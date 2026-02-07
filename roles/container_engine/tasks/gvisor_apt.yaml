@@ -5,7 +5,6 @@
     pkg:
       - apt-transport-https
       - ca-certificates
-      - curl
       - gnupg
 
 - name: Create keyrings folder
@@ -20,6 +19,9 @@
   ansible.builtin.get_url:
     url: "{{ gvisor_apt_gpg_url }}"
     dest: "{{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}"
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Add gVisor repository
   ansible.builtin.apt_repository:
