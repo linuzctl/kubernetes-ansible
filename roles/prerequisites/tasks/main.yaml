@@ -64,3 +64,21 @@
     state: present
     reload: true
   when: ipv6_enabled
+
+- name: prerequisites | Set max_user_watches
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_watches
+    value: "{{ sysctl_inotify_max_user_watches }}"
+    sysctl_set: true
+    sysctl_file: "{{ prerequisites_inotify_sysctl_file }}"
+    state: present
+    reload: true
+
+- name: prerequisites | Set max_user_instances
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_instances
+    value: "{{ sysctl_inotify_max_user_instances }}"
+    sysctl_set: true
+    sysctl_file: "{{ prerequisites_inotify_sysctl_file }}"
+    state: present
+    reload: true
