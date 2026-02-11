@@ -2,7 +2,7 @@
 
 kubeadm_install: true
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubeadm_version: "v1.35.0"
+kubeadm_version: "v1.35.1"
 kubeadm_bin_dir: "/usr/local/bin"
 kubeadm_arch: "{{ host_architecture }}"
 kubeadm_bin_url: "https://dl.k8s.io/{{ kubeadm_version }}/bin/linux/{{ kubeadm_arch }}/kubeadm"
@@ -10,7 +10,7 @@ kubeadm_bin_url_checksum: "sha256:https://dl.k8s.io/{{ kubeadm_version }}/bin/li
 
 kubelet_install: true
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubelet_version: "v1.35.0"
+kubelet_version: "v1.35.1"
 kubelet_bin_dir: "/usr/local/bin"
 kubelet_arch: "{{ host_architecture }}"
 kubelet_bin_url: "https://dl.k8s.io/{{ kubelet_version }}/bin/linux/{{ kubelet_arch }}/kubelet"
@@ -18,7 +18,7 @@ kubelet_bin_url_checksum: "sha256:https://dl.k8s.io/{{ kubelet_version }}/bin/li
 
 kubectl_install: true
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubectl_version: "v1.35.0"
+kubectl_version: "v1.35.1"
 kubectl_bin_dir: "/usr/local/bin"
 kubectl_arch: "{{ host_architecture }}"
 kubectl_bin_url: "https://dl.k8s.io/{{ kubectl_version }}/bin/linux/{{ kubectl_arch }}/kubectl"
