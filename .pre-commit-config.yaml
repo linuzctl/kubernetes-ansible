@@ -24,3 +24,5 @@ repos:
     hooks:
       - id: ansible-lint
         language_version: python3
+        files: ^(roles/|playbooks/).*\.(yml|yaml|j2)$
+        always_run: false
