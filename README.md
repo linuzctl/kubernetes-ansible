@@ -25,30 +25,30 @@ Before running this playbook, ensure the following:
 
 1. Copy the example inventory:
 
-```bash
-cp -R inventory/example inventory/dev
-```
+   ```bash
+   cp -R inventory/example inventory/dev
+   ```
 
 2. Edit the inventory and adjust variables according to your cluster setup.
 
-### Create Kubernetes cluster
+   ### Create Kubernetes cluster
 
-```bash
-ansible-playbook playbooks/main.yaml -i inventory/dev
-```
+   ```bash
+   ansible-playbook playbooks/main.yaml -i inventory/dev
+   ```
 
-### Upgrade Kubernetes cluster
+   ### Upgrade Kubernetes cluster
 
-```bash
-ansible-playbook playbooks/upgrade.yaml -i inventory/dev
-```
+   ```bash
+   ansible-playbook playbooks/upgrade.yaml -i inventory/dev
+   ```
 
-### Delete Kubernetes cluster
+   ### Delete Kubernetes cluster
 
-```bash
-ansible-playbook playbooks/reset.yaml -i inventory/dev
-```
+   ```bash
+   ansible-playbook playbooks/reset.yaml -i inventory/dev
+   ```
 
-# Disclaimer
+## Disclaimer
 
 This playbook is intended for personal or homelab use only. Use it only if you understand Kubernetes and kubeadm. Production stability is not guaranteed.
