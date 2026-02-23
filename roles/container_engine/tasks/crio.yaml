@@ -1,9 +1,5 @@
 ---
 
 - name: "crio choose binary install"
-  ansible.builtin.include_tasks: "crio_bin.yaml"
-  when: crio_install_method == "binary"
-
-- name: "crio choose binary install"
   ansible.builtin.include_tasks: "crio_apt.yaml"
   when: crio_install_method == "apt"
