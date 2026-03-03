@@ -55,7 +55,7 @@ crio_install_method: apt
 crio_install_method_available:
   - apt
 # renovate: datasource=github-releases depName=cri-o/cri-o
-crio_version: "v1.35.0"
+crio_version: "v1.35.1"
 crio_version_short: "{{ crio_version | regex_replace('^(v[0-9]+\\.[0-9]+).*', '\\1') }}"
 crio_arch: "{{ host_architecture }}"
 ## apt
