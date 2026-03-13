@@ -67,7 +67,7 @@ crio_apt_source: "https://download.opensuse.org/repositories/isv:/cri-o:/stable:
 # runc
 runc_bin_dir: /usr/local/sbin
 # renovate: datasource=github-releases depName=opencontainers/runc
-runc_version: v1.4.0
+runc_version: v1.4.1
 runc_bin_url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.{{ host_architecture }}"
 runc_bin_url_checksum: "sha256:https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.sha256sum"
 
