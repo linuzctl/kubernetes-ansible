@@ -4,7 +4,7 @@ An Ansible playbook to create and manage Kubernetes clusters using kubeadm. Desi
 
 Feature:
 
-- Install Kubernetes via binary or package manager
+- Install Kubernetes via binary or package manager (APT)
 - Support for multiple CPU architectures
 - Create, upgrade, and reset clusters
 
@@ -19,7 +19,7 @@ Before running this playbook, ensure the following:
 ## Supported OS
 
 - Debian 12/13
-- (Other Linux distributions may work, but not tested)
+- (Other Linux distributions may work, but not tested e.g. Ubuntu)
 
 ## Usage
 
