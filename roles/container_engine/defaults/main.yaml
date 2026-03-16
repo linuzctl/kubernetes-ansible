@@ -74,7 +74,7 @@ runc_bin_url_checksum: "sha256:https://github.com/opencontainers/runc/releases/d
 # cni
 cni_bin_dir: /opt/cni/bin
 # renovate: datasource=github-releases depName=containernetworking/plugins
-cni_version: v1.9.0
+cni_version: v1.9.1
 cni_bin_url: "https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz"
 cni_bin_url_checksum: "sha512:https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ host_architecture }}-{{ cni_version }}.tgz.sha512"
 
