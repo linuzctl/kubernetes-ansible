@@ -1,6 +1,6 @@
 ---
 # renovate: datasource=github-releases depName=kubernetes-sigs/cri-tools
-crictl_version: "v1.35.0"
+crictl_version: "v1.36.0"
 crictl_arch: "{{ host_architecture }}"
 crictl_bin_dir: "/usr/local/bin"
 crictl_config_dir: /etc
