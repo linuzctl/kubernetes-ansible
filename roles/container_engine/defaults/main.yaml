@@ -14,7 +14,7 @@ containerd_install_method_available:
   - bin
   - apt
 # renovate: datasource=github-releases depName=containerd/containerd
-containerd_version: "2.2.3"
+containerd_version: "2.3.0"
 containerd_arch: "{{ host_architecture }}"
 containerd_bin_dir: /usr/local/bin
 containerd_config_dir: /etc/containerd
