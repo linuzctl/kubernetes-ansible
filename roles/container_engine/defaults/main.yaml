@@ -22,7 +22,7 @@ containerd_config_file: config.toml
 ## bin
 containerd_bin_url: "https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-{{ containerd_arch }}.tar.gz"
 containerd_bin_url_checksum: "sha256:https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-{{ host_architecture }}.tar.gz.sha256sum"
-contaienrd_bin_systemd_service_url: "https://raw.githubusercontent.com/containerd/containerd/refs/tags/v{{ containerd_version }}/containerd.service"
+containerd_bin_systemd_service_url: "https://raw.githubusercontent.com/containerd/containerd/refs/tags/v{{ containerd_version }}/containerd.service"
 containerd_bin_systemd_service_dir: "/usr/local/lib/systemd/system"
 containerd_bin_systemd_service_file: "containerd.service"
 ## apt

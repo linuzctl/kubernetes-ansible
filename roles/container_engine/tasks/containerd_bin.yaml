@@ -45,7 +45,7 @@
 
 - name: containerd | Configure systemd service containerd
   ansible.builtin.get_url:
-    url: "{{ contaienrd_bin_systemd_service_url }}"
+    url: "{{ containerd_bin_systemd_service_url }}"
     dest: "{{ containerd_bin_systemd_service_dir }}/{{ containerd_bin_systemd_service_file }}"
     mode: "0644"
     owner: root
