@@ -51,6 +51,15 @@
     group: root
   notify: kubelet | restart kubelet
 
+- name: kubelet | Set 20-limits.conf for kubelet
+  ansible.builtin.template:
+    src: 20-limits.conf.j2
+    dest: /etc/systemd/system/kubelet.service.d/20-limits.conf
+    mode: "0644"
+    owner: root
+    group: root
+  notify: kubelet | restart kubelet
+
 - name: kubelet | Ensure kubelet is started and enabled
   ansible.builtin.systemd:
     name: kubelet
