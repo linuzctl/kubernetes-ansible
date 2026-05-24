@@ -3,7 +3,16 @@
 kubernetes_version: v1.36.1
 kubernetes_cluster_name: example
 kubernetes_dns_domain: k8s.example.com
-kubernetes_server_ip: 192.168.188.50
+kubernetes_server_ip: x.x.x.x # example: 10.1.1.100
 kubernetes_server_port: 6443
 kubernetes_cidr_service: 10.42.0.0/16
 kubernetes_cidr_pods: 10.43.0.0/16
+
+## Ensure the kube-vip interface matches the network interface
+# kube_vip_interface: "eth0" (default)
+
+## Container runtime to install.
+# container_engine_install:
+#   - containerd (default)
+#   - gvisor
+#   - crio
