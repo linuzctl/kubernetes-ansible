@@ -18,7 +18,7 @@ nodeRegistration:
   taints: []
 {% endif %}
 localAPIEndpoint:
-    advertiseAddress: {{ ansible_default_ipv4.address }}
+    advertiseAddress: {{ ansible_facts['default_ipv4']['address'] }}
     bindPort: {{ kubeadm_localapiendpoint_advertiseaddress }}
 ---
 apiVersion: kubeadm.k8s.io/v1beta4

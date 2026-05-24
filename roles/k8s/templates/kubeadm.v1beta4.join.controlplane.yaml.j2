@@ -6,7 +6,7 @@ nodeRegistration:
   name: {{ kube_override_hostname | default(inventory_hostname) }}
   kubeletExtraArgs:
     - name: node-ip
-      value: {{ ansible_default_ipv4.address }}
+      value: {{ ansible_facts['default_ipv4']['address'] }}
 discovery:
   bootstrapToken:
     apiServerEndpoint: {{ kubeadm_controlplaneendpoint }}
@@ -16,6 +16,6 @@ discovery:
       - {{ kubeadm_ca_cert_hash }}
 controlPlane:
   localAPIEndpoint:
-    advertiseAddress: {{ ansible_default_ipv4.address }}
+    advertiseAddress: {{ ansible_facts['default_ipv4']['address'] }}
     bindPort: {{ kubeadm_localapiendpoint_advertiseaddress }}
   certificateKey: {{ kubeadm_certificate_key }}
