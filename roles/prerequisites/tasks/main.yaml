@@ -32,7 +32,7 @@
     name: net.bridge.bridge-nf-call-iptables
     value: 1
     sysctl_set: true
-    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    sysctl_file: "{{ sysctl_k8s_file }}"
     state: present
     reload: true
 
@@ -41,7 +41,7 @@
     name: net.bridge.bridge-nf-call-ip6tables
     value: 1
     sysctl_set: true
-    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    sysctl_file: "{{ sysctl_k8s_file }}"
     state: present
     reload: true
   when: ipv6_enabled
@@ -51,7 +51,7 @@
     name: net.ipv4.ip_forward
     value: 1
     sysctl_set: true
-    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    sysctl_file: "{{ sysctl_k8s_file }}"
     state: present
     reload: true
 
@@ -60,7 +60,7 @@
     name: net.ipv6.ip_forward
     value: 1
     sysctl_set: true
-    sysctl_file: "{{ prerequisites_sysctl_file }}"
+    sysctl_file: "{{ sysctl_k8s_file }}"
     state: present
     reload: true
   when: ipv6_enabled
@@ -70,7 +70,7 @@
     name: fs.inotify.max_user_watches
     value: "{{ sysctl_inotify_max_user_watches }}"
     sysctl_set: true
-    sysctl_file: "{{ prerequisites_inotify_sysctl_file }}"
+    sysctl_file: "{{ sysctl_inotify_file }}"
     state: present
     reload: true
 
@@ -79,6 +79,6 @@
     name: fs.inotify.max_user_instances
     value: "{{ sysctl_inotify_max_user_instances }}"
     sysctl_set: true
-    sysctl_file: "{{ prerequisites_inotify_sysctl_file }}"
+    sysctl_file: "{{ sysctl_inotify_file }}"
     state: present
     reload: true
