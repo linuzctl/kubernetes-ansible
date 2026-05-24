@@ -1,10 +1,9 @@
 ---
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 kubernetes_version: v1.36.1
-kubernetes_server: example.k8s.example.com
-kubernetes_server_port: 6443
+kubernetes_cluster_name: example
+kubernetes_dns_domain: k8s.example.com
 kubernetes_server_ip: 192.168.188.50
-
-kubeadm_version: "{{ kubernetes_version }}"
-kubelet_version: "{{ kubernetes_version }}"
-kubectl_version: "{{ kubernetes_version }}"
+kubernetes_server_port: 6443
+kubernetes_cidr_service: 10.42.0.0/16
+kubernetes_cidr_pods: 10.43.0.0/16

@@ -15,7 +15,7 @@ kubeadm_etdc_local_datadir: /var/lib/etcd
 kubeadm_networking_dnsdomain: "{{ kubernetes_dns_domain }}"
 kubeadm_networking_servicesubnet: "{{ kubernetes_cidr_service }}"
 kubeadm_kubernetesversion: "{{ kubernetes_version }}"
-kubeadm_controlplaneendpoint: "{{ kubernetes_server }}:{{ kubernetes_server_port }}"
+kubeadm_controlplaneendpoint: "{{ kubernetes_server | default(kubernetes_cluster_name ~ '.' ~ kubernetes_dns_domain) }}:{{ kubernetes_server_port }}"
 kubeadm_dns_disabled: true
 kubeadm_proxy_disabled: true
 kubeadm_certificatesdir: /etc/kubernetes/pki
