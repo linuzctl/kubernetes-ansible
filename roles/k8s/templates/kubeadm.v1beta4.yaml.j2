@@ -44,3 +44,7 @@ clusterName: {{ kubeadm_clustername }}
 encryptionAlgorithm: {{ kubeadm_encryptionalgorithm }}
 certificateValidityPeriod: {{ kubeadm_certificatevalidityperiod }}
 caCertificateValidityPeriod: {{ kubeadm_cacertificatevalidityperiod }}
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+serverTLSBootstrap: true
