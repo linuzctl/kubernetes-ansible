@@ -7,7 +7,7 @@
 
 - name: prerequisites | Install packages
   ansible.builtin.package:
-    name: "{{ prerequisites_packages[ansible_os_family] }}"
+    name: "{{ prerequisites_packages[ansible_facts['os_family']] }}"
     state: present
 
 - name: prerequisites | Enable the overlay module
