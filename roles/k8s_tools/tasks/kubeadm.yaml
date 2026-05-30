@@ -18,7 +18,7 @@
     url: "{{ kubeadm_bin_url }}"
     checksum: "{{ kubeadm_bin_url_checksum }}"
     dest: "{{ kubeadm_bin_dir }}/kubeadm"
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
   when: |

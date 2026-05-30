@@ -22,7 +22,7 @@
         url: "{{ crictl_bin_url }}"
         checksum: "{{ crictl_bin_url_checksum }}"
         dest: "/tmp/crictl_{{ crictl_version }}_{{ crictl_arch }}.tar.gz"
-        mode: "0755"
+        mode: '0755'
         owner: root
         group: root
     - name: crictl | Extract binary
@@ -39,6 +39,6 @@
   ansible.builtin.template:
     src: crictl.yaml.j2
     dest: "{{ crictl_config_dir }}/{{ crictl_config_file }}"
-    mode: "0600"
+    mode: '0600'
     owner: "root"
     group: "root"

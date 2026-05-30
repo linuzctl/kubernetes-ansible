@@ -17,7 +17,7 @@
     url: "{{ kubectl_bin_url }}"
     checksum: "{{ kubectl_bin_url_checksum }}"
     dest: "{{ kubectl_bin_dir }}/kubectl"
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
   when: |

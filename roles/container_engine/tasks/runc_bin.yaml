@@ -22,6 +22,6 @@
         url: "{{ runc_bin_url }}"
         checksum: "{{ runc_bin_url_checksum }}"
         dest: "{{ runc_bin_dir }}/runc"
-        mode: "0755"
+        mode: '0755'
         owner: root
         group: root

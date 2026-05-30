@@ -22,7 +22,7 @@
         url: "{{ gvisor_bin_url }}/runsc"
         checksum: "{{ gvisor_bin_url_checksum }}/runsc.sha512"
         dest: "{{ gvisor_bin_dir }}/runsc"
-        mode: "0755"
+        mode: '0755'
         owner: root
         group: root
     - name: "gvisor | Download bin containerd-shim-runsc-v1"
@@ -30,6 +30,6 @@
         url: "{{ gvisor_bin_url }}/containerd-shim-runsc-v1"
         checksum: "{{ gvisor_bin_url_checksum }}/containerd-shim-runsc-v1.sha512"
         dest: "{{ gvisor_bin_dir }}/containerd-shim-runsc-v1"
-        mode: "0755"
+        mode: '0755'
         owner: root
         group: root

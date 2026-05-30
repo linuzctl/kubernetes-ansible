@@ -6,7 +6,7 @@
     state: directory
     owner: root
     group: root
-    mode: "0700"
+    mode: '0700'
   when:
     - inventory_hostname in groups['k8s_control_plane']
 
@@ -31,7 +31,7 @@
   ansible.builtin.template:
     src: "kube-vip.{{ kube_vip_manifest_type }}.yaml.j2"
     dest: "{{ kube_vip_manifest_dir }}/{{ kube_vip_manifest_file }}"
-    mode: "0600"
+    mode: '0600'
     owner: root
     group: root
   when:

@@ -22,14 +22,14 @@
         url: "{{ cni_bin_url }}"
         checksum: "{{ cni_bin_url_checksum }}"
         dest: "/tmp/cni_{{ cni_version }}_{{ host_architecture }}.tgz"
-        mode: "0755"
+        mode: '0755'
         owner: root
         group: root
     - name: Ensure cni dir exists
       ansible.builtin.file:
         path: "{{ cni_bin_dir }}"
         state: directory
-        mode: "0755"
+        mode: '0755'
         owner: "root"
         group: "root"
     - name: Extract binary

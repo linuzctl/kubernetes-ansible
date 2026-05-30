@@ -9,7 +9,7 @@
   ansible.builtin.template:
     src: "kubeadm.{{ kubeadm_apiversion }}.yaml.j2"
     dest: "{{ kubeadm_config_dir }}/{{ kubeadm_config_file }}"
-    mode: "0600"
+    mode: '0600'
     owner: root
     group: root
   when: inventory_hostname == groups['k8s_control_plane'][0]
@@ -86,7 +86,7 @@
   ansible.builtin.template:
     src: "{{ kubeadm_join_controlplane_config_file }}"
     dest: "{{ kubeadm_config_dir }}/{{ kubeadm_config_file }}"
-    mode: "0600"
+    mode: '0600'
     owner: root
     group: root
   when:
@@ -108,13 +108,13 @@
     state: directory
     owner: root
     group: root
-    mode: "0700"
+    mode: '0700'
 
 - name: initialization | Create kubeadm config
   ansible.builtin.template:
     src: "{{ kubeadm_join_worker_config_file }}"
     dest: "{{ kubeadm_config_dir }}/{{ kubeadm_config_file }}"
-    mode: "0600"
+    mode: '0600'
     owner: root
     group: root
   when:
