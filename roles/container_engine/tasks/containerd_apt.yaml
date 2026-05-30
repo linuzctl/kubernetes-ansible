@@ -1,10 +1,11 @@
 ---
 
 - name: Install dependencies
-  ansible.builtin.apt:
-    pkg:
+  ansible.builtin.package:
+    name:
       - ca-certificates
       - gnupg
+    state: present
 
 - name: Create keyrings folder
   ansible.builtin.file:
@@ -34,7 +35,7 @@
     state: present
 
 - name: Install containerd
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - containerd.io
     update_cache: true

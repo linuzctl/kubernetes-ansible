@@ -1,8 +1,8 @@
 ---
 
 - name: Install dependencies
-  ansible.builtin.apt:
-    pkg:
+  ansible.builtin.package:
+    name:
       - gnupg
 
 - name: Create keyrings folder
@@ -33,7 +33,7 @@
     state: present
 
 - name: Install cri-o
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - cri-o
     update_cache: true

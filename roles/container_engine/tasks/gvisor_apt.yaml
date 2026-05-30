@@ -1,8 +1,8 @@
 ---
 
 - name: Install dependencies
-  ansible.builtin.apt:
-    pkg:
+  ansible.builtin.package:
+    name:
       - apt-transport-https
       - ca-certificates
       - gnupg
@@ -35,7 +35,7 @@
     state: present
 
 - name: Install gVisor
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - runsc={{ gvisor_apt_version }}
     update_cache: true
