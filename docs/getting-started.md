@@ -4,10 +4,10 @@ This guide will help you quickly set up a Kubernetes cluster using the kubernete
 
 ## Prerequisites
 
-To create a Kubernetes cluster:
+To create a Kubernetes cluster, you need:
 
-- ansible
-- ssh access (with root privileges)
+- Ansible
+- SSH access (with root privileges)
 
 To finalize the Kubernetes cluster:
 
@@ -99,7 +99,11 @@ kubernetes_dns_domain: k8s.example.com
 kubernetes_server_ip: 192.168.188.56
 ```
 
-Ensure the kube-vip interface default value is correct.
+Ensure the kube-vip interface value matches the network interface used for the Kubernetes API endpoint (`eth0`). You can check the interface name on your master nodes with:
+
+```bash
+ip addr
+```
 
 ### 4. Check Connectivity
 
@@ -179,7 +183,9 @@ kubectl get csr --no-headers | awk '$NF=="Pending" {print $1}' | xargs kubectl c
 helmfile apply docs/helmfile.yaml
 ```
 
-### 4. Check Kubernetes Nodes After Cilium and CoreDNS Are Installed
+### 4. Check Kubernetes Nodes
+
+After Cilium and CoreDNS Are Installed the status will change from NonReady to Ready.
 
 ```bash
 > kubectl get nodes
