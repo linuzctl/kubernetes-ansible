@@ -57,8 +57,8 @@
     path: /etc/systemd/system/containerd.service.d
     state: directory
     mode: '0755'
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root
 
 - name: containerd | Set 10-kubeadm.conf for containerd
   ansible.builtin.template:
@@ -74,16 +74,16 @@
     path: "{{ containerd_config_dir }}"
     state: directory
     mode: '0755'
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root
 
 - name: containerd | Set containerd config file
   ansible.builtin.template:
     src: containerd.config.toml.j2
     dest: "{{ containerd_config_dir }}/{{ containerd_config_file }}"
     mode: '0640'
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root
   notify: Restart containerd service
 
 - name: containerd | Ensure containerd is started and enabled

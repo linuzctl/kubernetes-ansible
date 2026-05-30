@@ -40,5 +40,5 @@
     src: crictl.yaml.j2
     dest: "{{ crictl_config_dir }}/{{ crictl_config_file }}"
     mode: '0600'
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root

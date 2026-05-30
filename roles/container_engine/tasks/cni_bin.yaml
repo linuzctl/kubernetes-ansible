@@ -30,8 +30,8 @@
         path: "{{ cni_bin_dir }}"
         state: directory
         mode: '0755'
-        owner: "root"
-        group: "root"
+        owner: root
+        group: root
     - name: Extract binary
       ansible.builtin.unarchive:
         src: "/tmp/cni_{{ cni_version }}_{{ host_architecture }}.tgz"

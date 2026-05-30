@@ -39,8 +39,8 @@
     path: /etc/systemd/system/kubelet.service.d
     state: directory
     mode: '0600'
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root
 
 - name: kubelet | Set 10-kubeadm.conf for kubelet
   ansible.builtin.template:
