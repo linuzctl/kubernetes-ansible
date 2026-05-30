@@ -45,6 +45,7 @@ gvisor_bin_dir: /usr/local/bin
 gvisor_bin_url: "https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version_short }}/{{ gvisor_arch }}"
 gvisor_bin_url_checksum: "sha512:https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_version_short }}/{{ gvisor_arch }}"
 ## apt
+gvisor_apt_version: "{{ gvisor_version | regex_replace('^release-', '') }}"
 gvisor_apt_keyrings_dir: /usr/share/keyrings
 gvisor_apt_keyrings_file: gvisor-archive-keyring.gpg
 gvisor_apt_gpg_url: "https://gvisor.dev/archive.key"
