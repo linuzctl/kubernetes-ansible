@@ -6,14 +6,9 @@
     line: "{{ kubernetes_server_ip }} {{ kubernetes_server }}"
 
 - name: prerequisites | Install packages
-  ansible.builtin.apt:
-    pkg:
-      - conntrack
-      # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#ebtables-or-some-similar-executable-not-found-during-installation
-      - ethtool
-      - ebtables
-      # Recommended for csi-driver-nfs
-      - nfs-common
+  ansible.builtin.package:
+    name: "{{ prerequisites_packages[ansible_os_family] }}"
+    state: present
 
 - name: prerequisites | Enable the overlay module
   community.general.modprobe:
