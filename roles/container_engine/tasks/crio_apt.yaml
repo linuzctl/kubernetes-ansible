@@ -22,9 +22,14 @@
     mode: '0644'
 
 - name: Add cri-o repository
-  ansible.builtin.apt_repository:
-    filename: cri-0
-    repo: "deb [arch={{ crio_arch }} signed-by={{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}] {{ crio_apt_source }} /"
+  ansible.builtin.deb822_repository:
+    name: cri-o
+    types: deb
+    uris: "{{ crio_apt_source }}"
+    suites: release
+    components: main
+    architectures: "{{ crio_arch }}"
+    signed_by: "{{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}"
     state: present
 
 - name: Install cri-o

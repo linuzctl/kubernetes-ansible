@@ -23,9 +23,14 @@
     mode: '0644'
 
 - name: Add Docker repository
-  ansible.builtin.apt_repository:
-    filename: docker
-    repo: "deb [arch={{ containerd_arch }} signed-by={{ containerd_apt_keyrings_dir }}/{{ containerd_apt_keyrings_file }}] {{ containerd_apt_source }} {{ ansible_facts['distribution_release'] }} stable"
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: deb
+    uris: "{{ containerd_apt_source }}"
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    architectures: "{{ containerd_arch }}"
+    signed_by: "{{ containerd_apt_keyrings_dir }}/{{ containerd_apt_keyrings_file }}"
     state: present
 
 - name: Install containerd

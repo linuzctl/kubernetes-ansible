@@ -24,14 +24,19 @@
     mode: '0644'
 
 - name: Add gVisor repository
-  ansible.builtin.apt_repository:
-    filename: gvisor
-    repo: "deb [arch={{ host_architecture }} signed-by={{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}] {{ gvisor_apt_source }} release main"
+  ansible.builtin.deb822_repository:
+    name: gvisor
+    types: deb
+    uris: "{{ gvisor_apt_source }}"
+    suites: release
+    components: main
+    architectures: "{{ gvisor_arch }}"
+    signed_by: "{{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}"
     state: present
 
 - name: Install gVisor
   ansible.builtin.apt:
     name:
-      - runsc
+      - runsc={{ gvisor_apt_version }}
     update_cache: true
     state: present
