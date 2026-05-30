@@ -1,0 +1,41 @@
+---
+releases:
+  - name: cilium
+    namespace: kube-system
+    createNamespace: false
+    chart: oci://quay.io/cilium/charts/cilium
+    version: 1.19.4
+    values:
+      - cluster:
+          name: demo
+        k8sServiceHost: demo.k8s.example.com
+        k8sServicePort: 6443
+        kubeProxyReplacement: true
+        operator:
+          replicas: 1
+        routingMode: tunnel
+        tunnelProtocol: vxlan
+        l2announcements:
+          enabled: true
+        externalIPs:
+          enabled: true
+        envoy:
+          enabled: false
+        ipam:
+          mode: cluster-pool
+          operator:
+            clusterPoolIPv4MaskSize: 24
+            clusterPoolIPv4PodCIDRList:
+              - 10.42.0.0/16
+  - name: coredns
+    namespace: kube-system
+    createNamespace: false
+    chart: oci://ghcr.io/coredns/charts/coredns
+    version: 1.45.2
+    values:
+      - replicaCount: 2
+        k8sAppLabelOverride: kube-dns
+        service:
+          clusterIP: 10.43.0.10
+        serviceAccount:
+          create: true

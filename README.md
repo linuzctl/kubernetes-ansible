@@ -8,13 +8,7 @@ Feature:
 - Support for multiple CPU architectures
 - Create, upgrade, and reset clusters
 
-## Prerequisites
-
-Before running this playbook, ensure the following:
-
-- SSH access to all nodes in the inventory
-- Sudo privileges on all nodes
-- Basic understanding of Kubernetes and kubeadm
+See the [Getting Started Guide](docs/getting-started.md) for step-by-step instructions.
 
 ## Supported OS
 
