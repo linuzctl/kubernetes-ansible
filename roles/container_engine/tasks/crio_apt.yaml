@@ -1,11 +1,11 @@
 ---
 
-- name: Install dependencies
+- name: crio | Install dependencies
   ansible.builtin.package:
     name:
       - gnupg
 
-- name: Create keyrings folder
+- name: crio | Create keyrings folder
   ansible.builtin.file:
     path: "{{ crio_apt_keyrings_dir }}"
     state: directory
@@ -13,7 +13,7 @@
     group: root
     mode: '0755'
 
-- name: Add cri-o apt repository key.
+- name: crio | Add cri-o apt repository key
   ansible.builtin.get_url:
     url: "{{ crio_apt_gpg_url }}"
     dest: "{{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}"
@@ -21,7 +21,7 @@
     group: root
     mode: '0644'
 
-- name: Add cri-o repository
+- name: crio | Add cri-o repository
   ansible.builtin.deb822_repository:
     name: cri-o
     types: deb
@@ -32,7 +32,7 @@
     signed_by: "{{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}"
     state: present
 
-- name: Install cri-o
+- name: crio | Install cri-o
   ansible.builtin.package:
     name:
       - cri-o

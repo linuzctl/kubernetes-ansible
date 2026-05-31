@@ -1,13 +1,13 @@
 ---
 
-- name: Install dependencies
+- name: gvisor | Install dependencies
   ansible.builtin.package:
     name:
       - apt-transport-https
       - ca-certificates
       - gnupg
 
-- name: Create keyrings folder
+- name: gvisor | Create keyrings folder
   ansible.builtin.file:
     path: "{{ gvisor_apt_keyrings_dir }}"
     state: directory
@@ -15,7 +15,7 @@
     group: root
     mode: '0755'
 
-- name: Add gVisor`s official GPG key
+- name: gvisor | Add gVisor's official GPG key
   ansible.builtin.get_url:
     url: "{{ gvisor_apt_gpg_url }}"
     dest: "{{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}"
@@ -23,7 +23,7 @@
     group: root
     mode: '0644'
 
-- name: Add gVisor repository
+- name: gvisor | Add gVisor repository
   ansible.builtin.deb822_repository:
     name: gvisor
     types: deb
@@ -34,7 +34,7 @@
     signed_by: "{{ gvisor_apt_keyrings_dir }}/{{ gvisor_apt_keyrings_file }}"
     state: present
 
-- name: Install gVisor
+- name: gvisor | Install gVisor
   ansible.builtin.package:
     name:
       - runsc={{ gvisor_apt_version }}

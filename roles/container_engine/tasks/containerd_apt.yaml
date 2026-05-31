@@ -1,13 +1,13 @@
 ---
 
-- name: Install dependencies
+- name: containerd | Install dependencies
   ansible.builtin.package:
     name:
       - ca-certificates
       - gnupg
     state: present
 
-- name: Create keyrings folder
+- name: containerd | Create keyrings folder
   ansible.builtin.file:
     path: "{{ containerd_apt_keyrings_dir }}"
     state: directory
@@ -15,7 +15,7 @@
     group: root
     mode: '0755'
 
-- name: Add Docker`s official GPG key
+- name: containerd | Add Docker`s official GPG key
   ansible.builtin.get_url:
     url: "{{ containerd_apt_gpg_url }}"
     dest: "{{ containerd_apt_keyrings_dir }}/{{ containerd_apt_keyrings_file }}"
@@ -23,7 +23,7 @@
     group: root
     mode: '0644'
 
-- name: Add Docker repository
+- name: containerd | Add Docker repository
   ansible.builtin.deb822_repository:
     name: docker
     types: deb
@@ -34,7 +34,7 @@
     signed_by: "{{ containerd_apt_keyrings_dir }}/{{ containerd_apt_keyrings_file }}"
     state: present
 
-- name: Install containerd
+- name: containerd | Install containerd
   ansible.builtin.package:
     name:
       - containerd.io

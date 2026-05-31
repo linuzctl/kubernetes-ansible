@@ -1,19 +1,18 @@
 ---
 
-- name: Install containerd via binary
+- name: containerd | Install containerd via binary
   when: containerd_install_method == "bin"
   block:
-    - name: Install containerd bin
+    - name: containerd | Install containerd bin
       ansible.builtin.include_tasks: "containerd_bin.yaml"
-    - name: Install runc bin
+    - name: containerd | Install runc bin
       ansible.builtin.include_tasks: "runc_bin.yaml"
-    - name: Install CNI bin
-      ansible.builtin.include_tasks: "cni_bin.yaml"
 
-- name: Install containerd via apt
+- name: containerd | Install containerd via apt
   when: containerd_install_method == "apt"
   block:
-    - name: Install containerd apt
+    - name: containerd | Install containerd apt
       ansible.builtin.include_tasks: "containerd_apt.yaml"
-    - name: Install CNI bin
-      ansible.builtin.include_tasks: "cni_bin.yaml"
+
+- name: containerd | Import CNI task
+  ansible.builtin.include_tasks: "cni_bin.yaml"
