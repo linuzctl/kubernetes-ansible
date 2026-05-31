@@ -3,10 +3,10 @@
 kubernetes_version: v1.36.1
 kubernetes_cluster_name: example
 kubernetes_dns_domain: k8s.example.com
-kubernetes_server_ip: x.x.x.x # example: 10.1.1.100
+kubernetes_server_ip: x.x.x.x
 kubernetes_server_port: 6443
-kubernetes_cidr_service: 10.42.0.0/16
-kubernetes_cidr_pods: 10.43.0.0/16
+kubernetes_cidr_pods: 10.42.0.0/16
+kubernetes_cidr_service: 10.43.0.0/16
 
 ## Ensure the kube-vip interface matches the network interface
 # kube_vip_interface: "eth0" (default)
@@ -16,3 +16,13 @@ kubernetes_cidr_pods: 10.43.0.0/16
 #   - containerd (default)
 #   - gvisor
 #   - crio
+
+## Install crictl
+# crictl_install: true (default)
+
+## kubeadm disable
+# kubeadm_dns_disabled: true (default)
+# kubeadm_proxy_disabled: true (default)
+
+## IPv6 support
+# ipv6_enabled: false (default)
