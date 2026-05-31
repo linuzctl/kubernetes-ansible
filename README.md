@@ -2,7 +2,9 @@
 
 An Ansible playbook to create and manage Kubernetes clusters using kubeadm. Designed for my homelab or testing environments.
 
-Feature:
+Set up a Kubernetes-ready cluster in under 5 minutes with Ansible!
+
+Features:
 
 - Install Kubernetes via binary or package manager (APT)
 - Support for multiple CPU architectures
