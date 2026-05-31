@@ -13,6 +13,11 @@
   ],
   prConcurrentLimit: 0,
   prHourlyLimit: 0,
+  helmfile: {
+    managerFilePatterns: [
+      '/docs/helmfile\\.ya?ml$/',
+    ],
+  },
   customManagers: [
     {
       description: 'Process variable dependencies',
