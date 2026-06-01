@@ -31,7 +31,7 @@ releases:
     namespace: kube-system
     createNamespace: false
     chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.45.2
+    version: 1.46.0
     values:
       - replicaCount: 2
         k8sAppLabelOverride: kube-dns
