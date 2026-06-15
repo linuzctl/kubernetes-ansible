@@ -26,9 +26,7 @@
     name: cri-o
     types: deb
     uris: "{{ crio_apt_source }}"
-    suites: release
-    components: main
-    architectures: "{{ crio_arch }}"
+    suites: /
     signed_by: "{{ crio_apt_keyrings_dir }}/{{ crio_apt_keyrings_file }}"
     state: present
 
@@ -38,3 +36,9 @@
       - cri-o
     update_cache: true
     state: present
+
+- name: crio | Ensure cri-o is enabled and started
+  ansible.builtin.service:
+    name: crio
+    state: started
+    enabled: true
