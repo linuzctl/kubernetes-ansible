@@ -8,8 +8,14 @@ crictl_config_file: crictl.yaml
 crictl_bin_url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-linux-{{ crictl_arch }}.tar.gz"
 crictl_bin_url_checksum: "sha256:https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-linux-{{ crictl_arch }}.tar.gz.sha256"
 
-crictl_config_runtime_endpoint: unix:///run/containerd/containerd.sock
-crictl_config_image_endpoint: unix:///run/containerd/containerd.sock
+crictl_runtime_endpoints:
+  containerd:
+    runtime: unix:///run/containerd/containerd.sock
+    image: unix:///run/containerd/containerd.sock
+  crio:
+    runtime: unix:///var/run/crio/crio.sock
+    image: unix:///var/run/crio/crio.sock
+
 crictl_config_timeout: 2
 crictl_config_debug: "true"
 crictl_config_pull_image_on_create: "false"
