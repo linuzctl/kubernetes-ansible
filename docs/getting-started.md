@@ -185,7 +185,7 @@ helmfile apply docs/helmfile.yaml
 
 ### 4. Check Kubernetes Nodes
 
-After Cilium and CoreDNS Are Installed the status will change from NonReady to Ready.
+After Cilium and CoreDNS are installed the status will change from NonReady to Ready.
 
 ```bash
 > kubectl get nodes
