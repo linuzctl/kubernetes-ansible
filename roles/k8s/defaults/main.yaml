@@ -12,7 +12,7 @@ kubeadm_token_ttl: 30m
 # kubeadm config files
 kubeadm_localapiendpoint_advertiseaddress: "{{ kubernetes_server_port }}"
 kubeadm_etdc_local_datadir: /var/lib/etcd
-kubeadm_networking_dnsdomain: "{{ kubernetes_dns_domain }}"
+kubeadm_networking_dnsdomain: "cluster.local"
 kubeadm_networking_servicesubnet: "{{ kubernetes_cidr_service }}"
 kubeadm_kubernetesversion: "{{ kubernetes_version }}"
 kubeadm_controlplaneendpoint: "{{ kubernetes_server | default(kubernetes_cluster_name ~ '.' ~ kubernetes_dns_domain) }}:{{ kubernetes_server_port }}"
