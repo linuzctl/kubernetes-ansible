@@ -1,6 +1,6 @@
 ---
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-kubernetes_version: v1.36.2
+kubernetes_version: v1.36.3
 kubernetes_cluster_name: example
 kubernetes_dns_domain: k8s.example.com
 kubernetes_server_ip: x.x.x.x
