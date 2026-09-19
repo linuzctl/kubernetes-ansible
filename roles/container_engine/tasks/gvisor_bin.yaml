@@ -17,19 +17,25 @@
     not gvisor_file.stat.exists
     or gvisor_version not in gvisor_current_version.stdout
   block:
-    - name: "gvisor | Download bin runsc"
+    - name: "gvisor | Download gVisor archive"
       ansible.builtin.get_url:
-        url: "{{ gvisor_bin_url }}/runsc"
-        checksum: "{{ gvisor_bin_url_checksum }}/runsc.sha512"
-        dest: "{{ gvisor_bin_dir }}/runsc"
-        mode: '0755'
+        url: "{{ gvisor_bin_url }}/gvisor.tar.zstd"
+        checksum: "sha512:{{ gvisor_bin_url }}/gvisor.tar.zstd.sha512"
+        dest: "/tmp/gvisor.tar.zstd"
+        mode: '0644'
         owner: root
         group: root
-    - name: "gvisor | Download bin containerd-shim-runsc-v1"
-      ansible.builtin.get_url:
-        url: "{{ gvisor_bin_url }}/containerd-shim-runsc-v1"
-        checksum: "{{ gvisor_bin_url_checksum }}/containerd-shim-runsc-v1.sha512"
-        dest: "{{ gvisor_bin_dir }}/containerd-shim-runsc-v1"
-        mode: '0755'
+    - name: "gvisor | Extract gVisor archive"
+      ansible.builtin.unarchive:
+        src: "/tmp/gvisor.tar.zstd"
+        dest: "{{ gvisor_bin_dir }}"
+        remote_src: true
         owner: root
         group: root
+        mode: '0755'
+        extra_opts:
+          - "--zstd"
+    - name: "gvisor | Remove downloaded archive"
+      ansible.builtin.file:
+        path: "/tmp/gvisor.tar.zstd"
+        state: absent
