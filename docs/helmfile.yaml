@@ -4,7 +4,7 @@ releases:
     namespace: kube-system
     createNamespace: false
     chart: oci://quay.io/cilium/charts/cilium
-    version: 1.20.2
+    version: 1.20.3
     values:
       - cluster:
           name: demo
